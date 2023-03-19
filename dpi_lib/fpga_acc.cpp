@@ -1,11 +1,7 @@
-#include "get_fpga_acc.h"
+#include "fpga_acc.h"
 
-#define DUMMY_INTERFACE
-
-#ifdef DUMMY_INTERFACE
-std::unique_ptr<uint8_t[]> write_buffer, read_buffer;
-std::unique_ptr<int> read_fd, write_fd;
-#endif
+extern std::unique_ptr<uint8_t[]> write_buffer, read_buffer;
+extern std::unique_ptr<int> read_fd, write_fd;
 
 extern "C" void get_fpga_acc( const svOpenArrayHandle sig_in,
                               const unsigned long long arr_size_in,
