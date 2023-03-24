@@ -187,7 +187,6 @@ module pcie_vip_wrapper
 
 
   // VIP to pcie CDC
-
   axis_cdc_async i_cdc_probe2xdma
   (
     .s_axis_aresetn (xdma_resetn     ),
@@ -208,14 +207,17 @@ module pcie_vip_wrapper
   );
 
 
-  // DUT (emulated with loopback)
-  logic [DUT2VIP_WIDTH-1:0] dut2vip_bus_ff;
-
-  always_ff @(posedge vip2dut_clk) begin
-    dut2vip_bus_ff <= vip2dut_bus;
-  end
-
-  assign dut2vip_bus = dut2vip_bus_ff;
+  // DUT
+  inverse
+  #(.SIG_WIDTH (C_DATA_WIDTH),
+    .STAGES    (128         )
+  )
+  i_inverse
+  (
+    .clk (vip2dut_clk),
+    .in  (vip2dut_bus),
+    .out (dut2vip_bus)
+  );
 
 
 endmodule

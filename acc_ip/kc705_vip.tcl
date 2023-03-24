@@ -38,6 +38,7 @@ proc checkRequiredFiles { origin_dir} {
  "[file normalize "$origin_dir/xdc/kc705_vip.xdc"]"\
  "[file normalize "${origin_dir}/rtl/axis_probe.sv"]"\
  "[file normalize "${origin_dir}/rtl/pcie_loopback.sv"]"\
+ "[file normalize "${origin_dir}/../dut_example/rtl/inverse.sv"]"\
   ]
   foreach ifile $files {
     if { ![file isfile $ifile] } {
@@ -156,6 +157,7 @@ set files [list \
  [file normalize "${origin_dir}/rtl/pcie_vip_wrapper.sv"] \
  [file normalize "${origin_dir}/rtl/axis_probe.sv"] \
  [file normalize "${origin_dir}/rtl/pcie_loopback.sv"] \
+ [file normalize "${origin_dir}/../dut_example/rtl/inverse.sv"] \
 ]
 add_files -norecurse -fileset $obj $files
 
@@ -171,6 +173,11 @@ set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
 
 set file "$origin_dir/rtl/pcie_loopback.sv"
+set file [file normalize $file]
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
+
+set file "${origin_dir}/../dut_example/rtl/inverse.sv"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
