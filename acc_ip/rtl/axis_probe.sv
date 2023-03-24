@@ -246,7 +246,7 @@ module axis_probe
   );
 
 
-  // tkeep is currently always 0
-  assign m_axis_tkeep  = '0;
+  // tkeep is currently always filled with 1
+  assign m_axis_tkeep  = '1;
 
 endmodule
