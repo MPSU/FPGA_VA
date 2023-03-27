@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <string>
 #include <memory>
+#include <iostream>
 
 extern "C" {
   #include "cdev_sgdma.h"
