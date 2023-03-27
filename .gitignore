@@ -1,2 +1,4 @@
 cad_project/*
 *.so
+dut_example/*
+!dut_example/Makefile
