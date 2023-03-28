@@ -1,5 +1,5 @@
 
-.PHONY: prepare compile vsim questasim
+.PHONY: prepare compile vsim questasim clean
 
 prepare:
 	vlib ../cad_project/work
@@ -15,4 +15,7 @@ vsim: ../dpi_lib/libfpga_acc.so questacmnds.cmd ./work
 	vsim -batch -sv_lib ../dpi_lib/interface_libs/pcie/libpcie -sv_lib ../dpi_lib/libfpga_acc testbench
 
 questasim: ../dpi_lib/libfpga_acc.so questacmnds.cmd ./work
-	vsim -gui -sv_lib ../dpi_lib/interface_libs/pcie/libpcie -sv_lib ../dpi_lib/libfpga_acc testbench
+	vsim -gui -voptargs="+acc" -sv_lib ../dpi_lib/interface_libs/pcie/libpcie -sv_lib ../dpi_lib/libfpga_acc testbench
+
+clean:
+	$(RM) -rf ../cad_project/work

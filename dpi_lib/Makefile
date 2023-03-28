@@ -15,11 +15,11 @@ all: lib$(name).so
 $(interface_lib_path)/$(interface_shared_lib):
 	$(MAKE) -C $(interface_lib_path) $(interface_shared_lib)
 
-libpcie.so: $(interface_lib_path)/src/pcie_host_tranceiver.cpp
-	$(MAKE) -C $(interface_lib_path) $@
+$(interface_lib_path)/libpcie.so: $(interface_lib_path)/src/pcie_host_tranceiver.cpp
+	$(MAKE) -C $(interface_lib_path) libpcie.so
 
 
-lib$(name).so: $(name).cpp libpcie.so
+lib$(name).so: $(name).cpp $(interface_lib_path)/libpcie.so
 # "$<" means first prerequisite
 # "$@" means target filename
 	g++ $< -fPIC -shared  $(link_option) -o $@
