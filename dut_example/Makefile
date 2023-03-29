@@ -1,21 +1,28 @@
+dpi_lib_path  = ../dpi_lib
+interface     = pcie
+intf_lib_path = ../dpi_lib/interface_libs/$(interface)
 
 .PHONY: prepare compile vsim questasim clean
 
-prepare:
-	vlib ../cad_project/work
-	vmap work ../cad_project/work
+prepare: ../cad_project
+	vlib $</work
+	vmap work $</work
+
+../cad_project:
+	mkdir -p $@
 
 ./work: prepare rtl/inverse.sv tb/tb.sv
 	vlog rtl/inverse.sv tb/tb.sv
 
-../dpi_lib/libfpga_acc.so: ../dpi_lib/fpga_acc.cpp
-	$(MAKE) -C ../dpi_lib
+#"$(@D)" means "directory part of target file"
+$(dpi_lib_path)/libfpga_acc.so: $(dpi_lib_path)/fpga_acc.cpp $(intf_lib_path)/src/pcie_host_tranceiver.cpp
+	$(MAKE) -C "$(@D)"
 
-vsim: ../dpi_lib/libfpga_acc.so questacmnds.cmd ./work
+vsim: $(dpi_lib_path)/libfpga_acc.so ./work
 	vsim -batch -sv_lib ../dpi_lib/interface_libs/pcie/libpcie -sv_lib ../dpi_lib/libfpga_acc testbench
 
-questasim: ../dpi_lib/libfpga_acc.so questacmnds.cmd ./work
-	vsim -gui -voptargs="+acc" -sv_lib ../dpi_lib/interface_libs/pcie/libpcie -sv_lib ../dpi_lib/libfpga_acc testbench
+questasim: $(dpi_lib_path)/libfpga_acc.so ./work
+	vsim -gui -voptargs="+acc" -sv_lib $(dpi_lib_path)/libfpga_acc -sv_lib $(intf_lib_path)/libpcie testbench
 
 clean:
 	$(RM) -rf ../cad_project/work
