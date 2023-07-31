@@ -30,20 +30,20 @@ module axis_probe
 );
 
   // Local declarations
-  logic                                 s_axis_handshake;
-  logic                                 m_axis_handshake;
+  (* mark_debug = "true" *) logic                                 s_axis_handshake;
+  (* mark_debug = "true" *) logic                                 m_axis_handshake;
 
-  logic                                 vip_clk_en_ff;
-  logic                                 vip_clk_en_next;
+  (* mark_debug = "true" *) logic                                 vip_clk_en_ff;
+  (* mark_debug = "true" *) logic                                 vip_clk_en_next;
 
-  logic                                 dut2vip_capture_ff;
+  (* mark_debug = "true" *) logic                                 dut2vip_capture_ff;
 
   logic [C_DATA_WIDTH             -1:0] s_axis_shreg_ff   [VIP2DUT_WORDS_NUM-1:0];
   logic [C_DATA_WIDTH             -1:0] s_axis_shreg_next [VIP2DUT_WORDS_NUM-1:0];
   logic                                 s_axis_shreg_en;
 
-  logic [$clog2(VIP2DUT_WORDS_NUM)-1:0] s_axis_word_cnt_ff;
-  logic [$clog2(VIP2DUT_WORDS_NUM)-1:0] s_axis_word_cnt_next;
+  (* mark_debug = "true" *) logic [$clog2(VIP2DUT_WORDS_NUM):0] s_axis_word_cnt_ff;
+  logic [$clog2(VIP2DUT_WORDS_NUM):0] s_axis_word_cnt_next;
   logic                                 s_axis_word_cnt_en;
 
   logic                                 s_axis_bad_packet_ff;
@@ -55,11 +55,11 @@ module axis_probe
   logic [C_DATA_WIDTH             -1:0] m_axis_shreg_next [DUT2VIP_WORDS_NUM-1:0];
   logic                                 m_axis_shreg_en;
 
-  logic [$clog2(DUT2VIP_WORDS_NUM)-1:0] m_axis_word_cnt_ff;
-  logic [$clog2(DUT2VIP_WORDS_NUM)-1:0] m_axis_word_cnt_next;
+  (* mark_debug = "true" *) logic [$clog2(DUT2VIP_WORDS_NUM):0] m_axis_word_cnt_ff;
+  logic [$clog2(DUT2VIP_WORDS_NUM):0] m_axis_word_cnt_next;
   logic                                 m_axis_word_cnt_en;
 
-  logic                                 m_axis_actv_ff;
+  (* mark_debug = "true" *) logic                                 m_axis_actv_ff;
   logic                                 m_axis_actv_next;
   logic                                 m_axis_actv_en;
 
@@ -121,8 +121,10 @@ module axis_probe
   // s_axis_tready currently deasserts after s_axis_tlast and before
   // whole packet is read at m_axis side
   assign s_axis_tready = ~vip_clk_en_ff
-                       & ~dut2vip_capture_ff
-                       & ~m_axis_actv_ff;
+                       & ~dut2vip_capture_ff;
+//                       & ~m_axis_actv_ff;
+
+//  assign s_axis_tready = '1;
 
 
   // Flatten s_axis_shreg_ff MDA to vip2dut_bus vector
