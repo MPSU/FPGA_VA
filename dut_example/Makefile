@@ -19,10 +19,10 @@ $(dpi_lib_path)/libfpga_acc.so: $(dpi_lib_path)/fpga_acc.cpp $(intf_lib_path)/sr
 	$(MAKE) -C "$(@D)"
 
 vsim: $(dpi_lib_path)/libfpga_acc.so ./work
-	vsim -batch -sv_lib ../dpi_lib/interface_libs/pcie/libpcie -sv_lib ../dpi_lib/libfpga_acc testbench
+	vsim -batch -voptargs="+acc=n+/testbench/sig_in+/testbench/sig_out" -sv_lib $(dpi_lib_path)/libfpga_acc -sv_lib $(intf_lib_path)/libpcie testbench
 
 questasim: $(dpi_lib_path)/libfpga_acc.so ./work
-	vsim -gui -voptargs="+acc" -sv_lib $(dpi_lib_path)/libfpga_acc -sv_lib $(intf_lib_path)/libpcie testbench
+	vsim -gui -voptargs="+acc=n+/testbench/sig_in+/testbench/sig_out" -sv_lib $(dpi_lib_path)/libfpga_acc -sv_lib $(intf_lib_path)/libpcie testbench
 
 clean:
 	$(RM) -rf ../cad_project/work
