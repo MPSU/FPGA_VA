@@ -5,3 +5,6 @@ set_property -dict [list CONFIG.Component_Name {xdma_stream} CONFIG.pl_link_cap_
 
 ## pcie 2.0 x8 additional config
 set_property -dict [list CONFIG.pl_link_cap_max_link_speed {5.0_GT/s} CONFIG.axisten_freq {250} CONFIG.pf0_device_id {9028} CONFIG.plltype {QPLL1} CONFIG.PF0_DEVICE_ID_mqdma {9028} CONFIG.PF2_DEVICE_ID_mqdma {9228} CONFIG.PF3_DEVICE_ID_mqdma {9328}] [get_ips xdma_stream]
+
+## pcie 3.0 x8 additional config
+set_property -dict [list CONFIG.pl_link_cap_max_link_speed {8.0_GT/s} CONFIG.axi_data_width {256_bit} CONFIG.pf0_device_id {9038} CONFIG.coreclk_freq {500} CONFIG.PF0_DEVICE_ID_mqdma {9038} CONFIG.PF2_DEVICE_ID_mqdma {9238} CONFIG.PF3_DEVICE_ID_mqdma {9338}] [get_ips xdma_stream]

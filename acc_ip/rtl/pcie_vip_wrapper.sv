@@ -1,7 +1,7 @@
 module pcie_vip_wrapper
 #(
   parameter PCIE_WIDTH         = 8,
-  parameter C_DATA_WIDTH       = 128,
+  parameter C_DATA_WIDTH       = 256,
   parameter VIP2DUT_WORDS_NUM  = 16,
   parameter DUT2VIP_WORDS_NUM  = 16
 )
