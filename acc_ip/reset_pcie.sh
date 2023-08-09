@@ -13,5 +13,3 @@ sleep 1
 echo "load XDMA module"
 /tools/xdma/load_driver.sh
 sleep 1
-echo "set read access to xdma"
-chmod 666 /dev/xdma0_*
