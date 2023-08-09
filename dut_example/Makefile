@@ -12,7 +12,11 @@ prepare: ../cad_project
 	mkdir -p $@
 
 ./work: prepare rtl/inverse.sv tb/tb.sv
-	vlog rtl/inverse.sv tb/tb.sv
+ifeq ($(mode),FPGA)
+	vlog rtl/inverse.sv tb/tb.sv +define+FPGA +define+STAGES_DEF=$(stages) +define+WORDS_DEF=$(words)
+else
+	vlog rtl/inverse.sv tb/tb.sv +define+STAGES_DEF=$(stages) +define+WORDS_DEF=$(words)
+endif
 
 #"$(@D)" means "directory part of target file"
 $(dpi_lib_path)/libfpga_acc.so: $(dpi_lib_path)/fpga_acc.cpp $(intf_lib_path)/src/pcie_host_tranceiver.cpp
