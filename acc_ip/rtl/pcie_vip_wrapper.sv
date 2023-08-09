@@ -168,49 +168,41 @@ module pcie_vip_wrapper
 
 
 
+  // logic h2c_handshake;
+  // logic c2h_handshake;
+
+  // assign h2c_handshake = cdc2probe_tvalid & cdc2probe_tready;
+  // assign c2h_handshake = probe2cdc_tvalid & probe2cdc_tready;
 
 
+  // (* mark_debug = "true" *) logic h2c_write_last_ff;
+  // logic h2c_write_last_next;
+  // logic h2c_write_last_en;
 
+  // assign h2c_write_last_next = h2c_handshake & cdc2probe_tlast;
+  // assign h2c_write_last_en   = (h2c_handshake & cdc2probe_tlast)
+  //                            | (c2h_handshake & probe2cdc_tlast);
 
-  logic h2c_handshake;
-  logic c2h_handshake;
-  
-  assign h2c_handshake = cdc2probe_tvalid & cdc2probe_tready;
-  assign c2h_handshake = probe2cdc_tvalid & probe2cdc_tready;
+  // always_ff @ (posedge dut_clk or negedge dut_resetn)
+  //   if (~dut_resetn)
+  //     h2c_write_last_ff <= '0;
+  //   else if (h2c_write_last_en)
+  //     h2c_write_last_ff <= h2c_write_last_next;
 
-
-  (* mark_debug = "true" *) logic h2c_write_last_ff;
-  logic h2c_write_last_next;
-  logic h2c_write_last_en;
-  
-  assign h2c_write_last_next = h2c_handshake & cdc2probe_tlast;
-  assign h2c_write_last_en   = (h2c_handshake & cdc2probe_tlast) 
-                             | (c2h_handshake & probe2cdc_tlast);
-  
-  always_ff @ (posedge dut_clk or negedge dut_resetn)
-    if (~dut_resetn)
-      h2c_write_last_ff <= '0;
-    else if (h2c_write_last_en)
-      h2c_write_last_ff <= h2c_write_last_next;
-      
-  (* mark_debug = "true" *) logic write_filter;
-  
-  assign write_filter = h2c_write_last_ff & cdc2probe_tvalid;
-
+  // (* mark_debug = "true" *) logic write_filter;
+  // assign write_filter = h2c_write_last_ff & cdc2probe_tvalid;
 
   //(* mark_debug = "true" *) logic block_double_writes;
   //assign block_double_writes = (s_axis_c2h_tdata_0 == m_axis_h2c_tdata_0);
-  
-  (* mark_debug = "true" *) logic hc2_tvalid_masked;
-  assign hc2_tvalid_masked = cdc2probe_tvalid & ~h2c_write_last_ff;
 
+  // (* mark_debug = "true" *) logic hc2_tvalid_masked;
+  // assign hc2_tvalid_masked = cdc2probe_tvalid & ~h2c_write_last_ff;
 
+  // (* mark_debug = "true" *) logic dbg_wr_valid_nready;
+  // (* mark_debug = "true" *) logic dbg_rd_ready_nvalid;
 
-  (* mark_debug = "true" *) logic dbg_wr_valid_nready;
-  (* mark_debug = "true" *) logic dbg_rd_ready_nvalid;
-  
-  assign dbg_wr_valid_nready = cdc2probe_tvalid & ~cdc2probe_tready;
-  assign dbg_rd_ready_nvalid = probe2cdc_tready & ~probe2cdc_tvalid;
+  // assign dbg_wr_valid_nready = cdc2probe_tvalid & ~cdc2probe_tready;
+  // assign dbg_rd_ready_nvalid = probe2cdc_tready & ~probe2cdc_tvalid;
 
 
   // VIP probe
@@ -225,9 +217,7 @@ module pcie_vip_wrapper
     .s_axis_aresetn    (dut_resetn      ),
     .s_axis_aclk       (dut_clk         ),
 
-
-    //.s_axis_tvalid     (cdc2probe_tvalid),
-    .s_axis_tvalid     (hc2_tvalid_masked),
+    .s_axis_tvalid     (cdc2probe_tvalid),
     .s_axis_tready     (cdc2probe_tready),
     .s_axis_tdata      (cdc2probe_tdata ),
     .s_axis_tkeep      (cdc2probe_tkeep ),
@@ -269,7 +259,7 @@ module pcie_vip_wrapper
   );
 */
 
-  assign cdc2xdma_tvalid = '1;//probe2cdc_tvalid;
+  assign cdc2xdma_tvalid = probe2cdc_tvalid;
   assign cdc2xdma_tdata  = probe2cdc_tdata;
   assign cdc2xdma_tkeep  = probe2cdc_tkeep;
   assign cdc2xdma_tlast  = probe2cdc_tlast;

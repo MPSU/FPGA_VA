@@ -99,37 +99,34 @@ module pcie_loopback
   );
 
 
-  logic h2c_handshake;
-  logic c2h_handshake;
-  
-  assign h2c_handshake = m_axis_h2c_tvalid_0 & m_axis_h2c_tready_0;
-  assign c2h_handshake = s_axis_c2h_tvalid_0 & s_axis_c2h_tready_0;
+  // logic h2c_handshake;
+  // logic c2h_handshake;
 
+  // assign h2c_handshake = m_axis_h2c_tvalid_0 & m_axis_h2c_tready_0;
+  // assign c2h_handshake = s_axis_c2h_tvalid_0 & s_axis_c2h_tready_0;
 
-  (* mark_debug = "true" *) logic h2c_write_last_ff;
-  logic h2c_write_last_next;
-  logic h2c_write_last_en;
-  
-  assign h2c_write_last_next = h2c_handshake & m_axis_h2c_tlast_0;
-  assign h2c_write_last_en   = (h2c_handshake & m_axis_h2c_tlast_0) 
-                             | (c2h_handshake & s_axis_c2h_tlast_0);
-  
-  always_ff @ (posedge axi_clk or negedge axi_resetn)
-    if (~axi_resetn)
-      h2c_write_last_ff <= '0;
-    else if (h2c_write_last_en)
-      h2c_write_last_ff <= h2c_write_last_next;
-      
-  (* mark_debug = "true" *) logic write_filter;
-  
-  assign write_filter = h2c_write_last_ff & m_axis_h2c_tvalid_0;
+  // (* mark_debug = "true" *) logic h2c_write_last_ff;
+  // logic h2c_write_last_next;
+  // logic h2c_write_last_en;
 
+  // assign h2c_write_last_next = h2c_handshake & m_axis_h2c_tlast_0;
+  // assign h2c_write_last_en   = (h2c_handshake & m_axis_h2c_tlast_0) 
+  //                            | (c2h_handshake & s_axis_c2h_tlast_0);
+
+  // always_ff @ (posedge axi_clk or negedge axi_resetn)
+  //   if (~axi_resetn)
+  //     h2c_write_last_ff <= '0;
+  //   else if (h2c_write_last_en)
+  //     h2c_write_last_ff <= h2c_write_last_next;
+
+  // (* mark_debug = "true" *) logic write_filter;
+  // assign write_filter = h2c_write_last_ff & m_axis_h2c_tvalid_0;
 
   //(* mark_debug = "true" *) logic block_double_writes;
   //assign block_double_writes = (s_axis_c2h_tdata_0 == m_axis_h2c_tdata_0);
-  
-  (* mark_debug = "true" *) logic hc2_tvalid_masked;
-  assign hc2_tvalid_masked = m_axis_h2c_tvalid_0 & ~h2c_write_last_ff;
+
+  // (* mark_debug = "true" *) logic hc2_tvalid_masked;
+  // assign hc2_tvalid_masked = m_axis_h2c_tvalid_0 & ~h2c_write_last_ff;
 
 
   // Loopback fifo
@@ -137,8 +134,7 @@ module pcie_loopback
   (
     .s_axis_aresetn (axi_resetn         ),
     .s_axis_aclk    (axi_clk            ),
-    .s_axis_tvalid  (hc2_tvalid_masked),
-    //.s_axis_tvalid  (m_axis_h2c_tvalid_0),
+    .s_axis_tvalid  (m_axis_h2c_tvalid_0),
     .s_axis_tready  (m_axis_h2c_tready_0),
     .s_axis_tdata   (m_axis_h2c_tdata_0 ),
     .s_axis_tkeep   (m_axis_h2c_tkeep_0 ),
@@ -151,7 +147,6 @@ module pcie_loopback
   );
 
 //(* mark_debug = "true" *) logic smth_gone_wrong;
-
 //assign smth_gone_wrong = s_axis_c2h_tvalid_0 & m_axis_h2c_tvalid_0;
 
 endmodule
