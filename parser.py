@@ -1,3 +1,7 @@
+# WIP
+# Script, that parse DUT and testbench modules and generates
+# testbench that will use FPGA accelerator
+
 import re
 # import regex
 
