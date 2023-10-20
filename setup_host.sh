@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -ex
 # ####################################
 # should use after clean installation
 # of distro before packages install
@@ -19,8 +19,7 @@ sudo apt-get install build-essential git -y
 # ####################################
 # clone Accelerator repo
 # ####################################
-cd ~
-git clone --recursive git@github.com:MPSU/FPGA_VA.git
+git clone --recursive https://github.com/MPSU/FPGA_VA.git $HOME/FPGA_VA
 # ####################################
 
 
@@ -29,8 +28,10 @@ git clone --recursive git@github.com:MPSU/FPGA_VA.git
 # in order to be built on the latest
 # kernels.
 # ####################################
-wget --output-document=~/xdma.patch https://patch-diff.githubusercontent.com/raw/Xilinx/dma_ip_drivers/pull/238.patch
+cd $HOME/FPGA_VA/dpi_lib/interface_libs/pcie/submodules/pcie_drivers
+wget --output-document=xdma.patch https://patch-diff.githubusercontent.com/raw/Xilinx/dma_ip_drivers/pull/238.patch
 git apply xdma.patch
+rm xdma.patch
 # ####################################
 
 
@@ -38,7 +39,7 @@ git apply xdma.patch
 # XDMA module can be built simply by
 # calling `make` iside xdma folder
 # ####################################
-cd FPGA_VA/dpi_lib/interface_libs/pcie/submodules/pcie_drivers/XDMA/linux-kernel/xdma
+cd XDMA/linux-kernel/xdma
 make
 # ####################################
 
@@ -107,3 +108,4 @@ echo 'SUBSYSTEM=="xdma" GROUP="xdma"' | sudo tee /etc/udev/rules.d/60-xdma.rules
 echo "Script has been finished."
 echo "You should restart to make changes work."
 # ####################################
+
