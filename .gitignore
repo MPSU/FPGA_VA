@@ -2,3 +2,5 @@ cad_project/*
 *.so
 dut_example/*
 !dut_example/Makefile
+acc_ip/kc705_vip/*
+
