@@ -1,6 +1,9 @@
+acc_ip/kc705_vip/*
+acc_ip/kcu116_vip/*
+acc_ip/*jou
+acc_ip/*log
 cad_project/*
 *.so
 dut_example/*
 !dut_example/Makefile
-acc_ip/kc705_vip/*
 
