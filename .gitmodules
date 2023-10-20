@@ -1,0 +1,3 @@
+[submodule "dpi_lib/interface_libs/pcie/submodules/pcie_drivers"]
+	path = dpi_lib/interface_libs/pcie/submodules/pcie_drivers
+	url = https://github.com/Xilinx/dma_ip_drivers.git
